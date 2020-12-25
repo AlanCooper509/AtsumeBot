@@ -1,7 +1,7 @@
 // import modules
-require("dotenv").config();
-const fs = require("fs");
 const Discord = require("discord.js");
+const fs = require("fs");
+require("dotenv").config();
 
 // instantiate client
 const client = new Discord.Client();
