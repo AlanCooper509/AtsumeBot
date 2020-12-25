@@ -5,15 +5,17 @@ const sqlite3 = require("sqlite3").verbose();
 // emote codes from host server
 const emote_small = "<:small:791743268593074186>";
 const emote_large = "<:large:791743268299079722>";
-const emote_fish  = "<:fish:791749110881058837>";
+const emote_fish  = "<:fish:791899217924063244>";
 const emote_goldfish  = "<:goldfish:791749110977921055>";
-const emote_left = "<:left:791835040501858324>";
+const emote_left = "<:left:791899280721182720>";
 const emote_right = "<:right:791835051025367060>";
 
 // define bot command
 module.exports = (message) => {
 	let input = message.content.toLowerCase();
-
+	console.log(message.guild.emojis.cache.find(emoji => emoji.name == "left").id);
+	console.log(message.guild.emojis.cache.find(emoji => emoji.name == "right").id);
+	
 	// input case: user is browsing items to purchase
 	if (input === "%shop" || input === "%s") {
 		browsing(message);
