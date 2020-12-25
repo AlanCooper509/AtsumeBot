@@ -41,9 +41,7 @@ module.exports = (client, message) => {
 		db.close();
 
 		// proceed with processing request
-		let input = message.content.toLowerCase();
-
-		if (input.startsWith("%shop") || input.startsWith("%s")) {
+		if (message.content.match(/^%(s|shop)/i)) {
 			shop(message);
 		}
 	

@@ -12,16 +12,14 @@ const emote_right = "<:right:791835051025367060>";
 
 // define bot command
 module.exports = (message) => {
-	let input = message.content.toLowerCase();
-	console.log(message.guild.emojis.cache.find(emoji => emoji.name == "left").id);
-	console.log(message.guild.emojis.cache.find(emoji => emoji.name == "right").id);
-	
 	// input case: user is browsing items to purchase
-	if (input === "%shop" || input === "%s") {
+	if (message.content.match(/^%(s|shop)$/i)) {
 		browsing(message);
 	}
-	
-	// TODO: add purchase log
+	// input case: user is attempting to purchase an item
+	else if (message.content.match(/^%(s|shop) [a-zA-Z0-9]/i)) {
+		purchasing(message);
+	}
 }
 
 function browsing(message) {
@@ -30,14 +28,14 @@ function browsing(message) {
 
 	// setup queries
 	const shopQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT * FROM GoodiesShop ORDER BY category ASC`
+		let sql = `SELECT * FROM GoodiesShop ORDER BY category ASC`;
 		db.all(sql, [], (err, rows) => {
 			if (err) reject(err);
 			else resolve(rows);
 		});
 	});
 	const userQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT * FROM PlayerData WHERE discord_id == \"d-${message.author.id}\"`
+		let sql = `SELECT * FROM PlayerData WHERE discord_id == \"d-${message.author.id}\"`;
 		db.get(sql, [], (err, row) => {
 			if (err) reject(err);
 			else resolve(row);
@@ -74,9 +72,122 @@ function browsing(message) {
 
 			// send embed
 			message.channel.send(shopEmbed).then(embed => {
-				embed.react(emote_left.split(':')[2].split('>')[0]);
-				embed.react(emote_right.split(':')[2].split('>')[0]);
+				embed.react(customEmoteId(emote_left)).then(() => {
+					embed.react(customEmoteId(emote_right));
+				});
 			});
 		}
 	});
+}
+
+function purchasing(message) {
+	let tokens = message.content.split(' ');
+	tokens.shift();
+	let item = tokens.join(' ').replace(/['"]/g, ''); // no SQL injection today!
+	
+	// open db
+	let db = new sqlite3.Database("memory.s3db");
+
+	// setup queries
+	const itemExistsQuery = new Promise((resolve, reject) => {
+		let sql = `SELECT * FROM GoodiesShop WHERE LOWER(name) == \"${item.toLowerCase()}\"`;
+		db.get(sql, [], (err, row) => {
+			if (err) reject(err);
+			else resolve(row);
+		});
+	});
+	const purchasedQuery = new Promise((resolve, reject) => {
+		let sql = `SELECT * FROM PurchaseLog WHERE discord_id == \"d-${message.author.id}\" AND LOWER(item_name) == \"${item}\"`;
+		db.get(sql, [], (err, row) => {
+			if (err) reject(err);
+			else resolve(row);
+		});
+	});
+	const balanceQuery = new Promise((resolve, reject) => {
+		let sql = `SELECT CASE WHEN (SELECT price_type FROM GoodiesShop WHERE LOWER(name) == \"${item.toLowerCase()}\") == 'F' ` +
+			`THEN fish_count - (SELECT price_amount FROM GoodiesShop WHERE LOWER(name) == \"${item.toLowerCase()}\") ` +
+			`ELSE goldfish_count - (SELECT price_amount FROM GoodiesShop WHERE LOWER(name) == \"${item.toLowerCase()}\") ` +
+			`END new_balance, ` +
+			`CASE WHEN (SELECT price_type FROM GoodiesShop WHERE LOWER(name) == \"${item.toLowerCase()}\") == 'F' THEN 'F' ELSE 'G' ` +
+			`END currency ` + 
+			`FROM PlayerData WHERE discord_id = \"d-${message.author.id}\"`
+		db.get(sql, [], (err, row) => {
+			if (err) reject(err);
+			resolve(row);
+		});
+	});
+
+	// execute queries
+	Promise.all([itemExistsQuery, purchasedQuery, balanceQuery]).then( results => {
+		let itemExists = typeof results[0] != "undefined";
+		let hasPurchased = typeof results[1] != "undefined";
+		let canPurchase = results[2].new_balance > 0;
+
+		// edge cases
+		if(!itemExists) {
+			db.close();
+			message.channel.send(`Could not find **${item}** in the shop.`);
+		} else if (hasPurchased) {
+			db.close();
+			message.channel.send(`You have already bought **${results[0].name}**.`);
+		} else if (!canPurchase) {
+			db.close();
+			message.channel.send(`You don't have enough fish...`);
+		} else {
+			// confirmation message
+			const filter = (reaction, user) => {
+				// TODO: yes/no
+				return [customEmoteId(emote_left), customEmoteId(emote_right)].includes(reaction.emoji.id) && user.id === message.author.id;
+			};
+
+			message.channel.send(`Purchase **${results[0].name}**?`).then(confirmation => {
+				// TODO: yes/no
+				confirmation.react(emote_left).then(() => {
+					confirmation.react(emote_right);
+				});
+
+				confirmation.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] }).then(collected => {
+					const reaction = collected.first();
+
+					// TODO: add if statement to filter (only supposed to be on "yes")
+					console.log(reaction.emoji.name);
+					confirmation.react("✅");
+
+					// update db
+					const addPurchase = new Promise((resolve, reject) => {
+						headers = ["discord_id", "item_name"];
+						values = [`\"d-${message.author.id}\"`, `\"${results[0].name}\"`];
+						let sql = `INSERT INTO PurchaseLog (${headers.join(', ')}) VALUES (${values.join(', ')})`;
+						db.run(sql, [], err => {
+							if (err) throw(err);
+							else resolve();
+						});
+					});
+					const updateBalance = new Promise((resolve, reject) => {
+						let sql = `UPDATE PlayerData SET ${results[2].currency == 'F' ? "fish_count" : "goldfish_count"} = ${results[2].new_balance} WHERE discord_id = \"d-${message.author.id}\"`;
+						db.run(sql, [], err => {
+							if (err) throw(err);
+							else resolve();
+						});
+					})
+					return Promise.all([addPurchase, updateBalance]);
+				}).then((args) => {
+					db.close();
+					// TODO: make a fancy embed :)
+					message.channel.send(`You bought **${results[0].name}**!`);
+				})
+				.catch((a) => {
+					db.close();
+					console.log(a);
+					// reaction window timeout
+					confirmation.react("🚫");
+				});
+			});
+		}
+	});
+}
+
+// todo; move me and make me an import statement
+function customEmoteId(emote) {
+	return emote.split(':')[2].split('>')[0];
 }
