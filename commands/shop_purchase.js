@@ -46,7 +46,7 @@ module.exports = (message) => {
 	Promise.all([itemExistsQuery, purchasedQuery, balanceQuery]).then( results => {
 		let item = results[0];
 		let hasPurchased = typeof results[1] != "undefined";
-		let canPurchase = results[2].new_balance > 0;
+		let canPurchase = results[2].new_balance >= 0;
 
 		// edge cases
 		if(typeof item == "undefined") {

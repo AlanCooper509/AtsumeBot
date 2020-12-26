@@ -23,20 +23,28 @@ module.exports = (message) => {
 			else resolve(row);
 		});
 	});
+	const soldQuery = new Promise((resolve, reject) => {
+		let sql = `SELECT item_name FROM PurchaseLog WHERE discord_id == \"d-${message.author.id}\"`;
+		db.all(sql, [], (err, rows) => {
+			if (err) reject(err);
+			else resolve(rows);
+		});
+	});
 	// TODO: purchased query
 	
 	// execute queries
-	Promise.all([shopQuery, userQuery]).then( results => {
+	Promise.all([shopQuery, userQuery, soldQuery]).then( results => {
 		db.close();
 		let shopRows = results[0];
 		let userRow = results[1];
+		let inventory = results[2];
 
 		if (shopRows.length > 0) {
 			// sort items by category (dictionary of lists)
 			itemLists = {};
 			shopRows.forEach(row => {
 				let size = row.size === 'S' ? emotes.small : emotes.large;
-				let name = `\`${row.name}\``;
+				let name = inventory.filter(entry => entry.item_name == row.name).length > 0 ? `~~\`${row.name}\`~~` : `\`${row.name}\``;
 				let cost = row.price_type === 'F' ? `${emotes.fish} ${row.price_amount}` : `${emotes.goldfish} ${row.price_amount}`;
 				let rowEntry = `${size} ${name} ${cost}`; // to be formatted after compiling
 				if (Object.keys(itemLists).includes(row.category)) {
