@@ -86,7 +86,7 @@ function previewPurchase(message, item, new_balance) {
 	};
 
 	// send confirmation message
-	let confirmation;
+	let confirmation; // for scope
 	message.channel.send(itemEmbed).then(confirmationMessage => {
 		confirmation = confirmationMessage;
 		confirmation.react(emotes.yes).then(() => {
@@ -97,7 +97,7 @@ function previewPurchase(message, item, new_balance) {
 		// received user confirmation response
 		if(collected.first().emoji.name == "yes") {
 			performPurchase(message, item, new_balance);
-		} else {
+		} else if (collected.first().emoji.name == "no") {
 			message.channel.send(`**${message.member.displayName}** did not buy the **${item.name}**...`);
 		}
 	})

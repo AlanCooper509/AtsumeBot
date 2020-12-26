@@ -8,8 +8,7 @@ module.exports = (client, message) => {
 	// sequentially run the following helper functions
 	let db = new sqlite3.Database("memory.s3db");
 	const userQuery = new Promise(checkUserStatus);
-	userQuery.then(addIfNewUser)
-		.then(handleMessage);
+	userQuery.then(addIfNewUser).then(handleMessage);
 	
 	// helper functions
 	function checkUserStatus(resolve, reject) {
