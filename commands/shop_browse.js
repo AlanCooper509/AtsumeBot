@@ -77,7 +77,7 @@ function sendReplies(message, userRow, itemLists) {
 		.addField("Current Balance:", `${userRow.fish_count} ${emotes.fish}`, true)
 		.addField('\u200b', `${userRow.goldfish_count} ${emotes.goldfish}`, true);
 
-	let current_category = "Balls (Page 1)";
+	let current_category = "Balls (Page 1)"; // TODO: make food first category after adding the food items in
 	message.channel.send(shopEmbed).then(() => {
 		// display first shop page
 		return message.channel.send(createTable(current_category, itemLists));

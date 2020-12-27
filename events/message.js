@@ -43,9 +43,5 @@ module.exports = (client, message) => {
 		if (message.content.match(/^%(s|shop)/i)) {
 			shop(message);
 		}
-	
-		if (message.content === "ping") {
-			reply(message, "Pong!");
-		}
 	}
 }
