@@ -49,8 +49,8 @@ module.exports = (message) => {
 
 				// pagination of categories
 				let pageNumber = 1;
-				let entriesPerPage = 6;
-				while( `${row.category} (Page ${pageNumber})` in itemLists && itemLists[`${row.category} (Page ${pageNumber})`].length > entriesPerPage) {
+				let entriesPerPage = 15;
+				while( `${row.category} (Page ${pageNumber})` in itemLists && itemLists[`${row.category} (Page ${pageNumber})`].length >= entriesPerPage) {
 					pageNumber++;
 				};
 

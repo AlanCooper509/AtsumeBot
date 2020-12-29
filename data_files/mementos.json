@@ -1,0 +1,404 @@
+{
+	"0": {
+		"name": "Flowered Collar",
+		"name_jap": "花がらの首輪",
+		"desc": "A small collar with a flower%rprint pattern.",
+		"desc_jap": "花がらの小さな首輪"
+	},
+	"1": {
+		"name": "Soft Brush",
+		"name_jap": "柔らかいブラシ",
+		"desc": "A soft brush for fur.",
+		"desc_jap": "柔らかな毛のブラシ"
+	},
+	"2": {
+		"name": "Glow Bracelet",
+		"name_jap": "ひかる輪っか",
+		"desc": "Something to wear at evening%revents.",
+		"desc_jap": "夜店で売られているあれ"
+	},
+	"3": {
+		"name": "Cicada Skin",
+		"name_jap": "せみのぬけがら",
+		"desc": "The cast-off skin from a%rmolting cicada.",
+		"desc_jap": "硬くて軽い抜け殻"
+	},
+	"4": {
+		"name": "Shiny Acorn",
+		"name_jap": "つやつやのどんぐり",
+		"desc": "An acorn with a shiny shell.",
+		"desc_jap": "つやつやで綺麗などんぐり"
+	},
+	"5": {
+		"name": "Seashell Earring",
+		"name_jap": "貝がらのイヤリング",
+		"desc": "A lovely drop earring with%ra small seashell.",
+		"desc_jap": "綺麗な貝がらに%r小さいビーズがつけられている"
+	},
+	"6": {
+		"name": "Aluminum Pins",
+		"name_jap": "缶バッヂ",
+		"desc": "They make rattling noises%rwhen you shake them.",
+		"desc_jap": "当たるとカチャカチャと音がする"
+	},
+	"7": {
+		"name": "Damp Matchbox",
+		"name_jap": "湿気ったマッチ",
+		"desc": "The matches are too damp%rto light.",
+		"desc_jap": "湿気ってしまって火はつかない"
+	},
+	"8": {
+		"name": "Random Seeds",
+		"name_jap": "なにかの種",
+		"desc": "Random seeds.",
+		"desc_jap": "なんの種かわからない"
+	},
+	"9": {
+		"name": "Teaser Toy Tip",
+		"name_jap": "猫じゃらしの先っぽ",
+		"desc": "A trophy from a hard-fought%rbattle?",
+		"desc_jap": "今まで戦った戦利品？"
+	},
+	"10": {
+		"name": "Raffle Ticket",
+		"name_jap": "くじびき券",
+		"desc": "A ticket for a store raffle.",
+		"desc_jap": "どこかの商店街のくじびき券"
+	},
+	"11": {
+		"name": "Flower Bookmark",
+		"name_jap": "押し花のしおり",
+		"desc": "A bookmark made from a%rpurple pressed flower.",
+		"desc_jap": "紫色の花がついたしおり"
+	},
+	"12": {
+		"name": "Small Mittens",
+		"name_jap": "小さな軍手",
+		"desc": "Small、 handmade mittens.",
+		"desc_jap": "手作りの小さな軍手"
+	},
+	"13": {
+		"name": "Dirty Toy Animal",
+		"name_jap": "汚れたぬいぐるみ",
+		"desc": "A gently used small stuffed%rpenguin.",
+		"desc_jap": "小さなペンギン(?)のぬいぐるみ"
+	},
+	"14": {
+		"name": "Fish-stick Board",
+		"name_jap": "かまぼこの板",
+		"desc": "A small、 pungent board that%ronce held fish sticks.",
+		"desc_jap": "ほのかにかまぼこの香りがする板"
+	},
+	"15": {
+		"name": "Hourglass",
+		"name_jap": "砂時計",
+		"desc": "An hourglass filled with%rblue sand.",
+		"desc_jap": "青い砂の入った砂時計"
+	},
+	"16": {
+		"name": "Used Hand Warmer",
+		"name_jap": "使い捨てカイロ",
+		"desc": "A disposable hand warmer%rthat's already been used.",
+		"desc_jap": "使い終わってカッチカチ%rになっているカイロ"
+	},
+	"17": {
+		"name": "Silent Bell",
+		"name_jap": "ならない鈴",
+		"desc": "A small bell that does%rnot ring.",
+		"desc_jap": "ならないように細工された鈴"
+	},
+	"18": {
+		"name": "Toy Mirror",
+		"name_jap": "オモチャの手鏡",
+		"desc": "A small、 sturdy mirror.",
+		"desc_jap": "丈夫でちいさな手鏡"
+	},
+	"19": {
+		"name": "Colored Candles",
+		"name_jap": "カラーロウソク",
+		"desc": "A colorful assortment%rof candles.",
+		"desc_jap": "色付きのカラフルなロウソク"
+	},
+	"20": {
+		"name": "Scuffed Dime",
+		"name_jap": "古い十円玉",
+		"desc": "A coin with grooves around%rthe edge.",
+		"desc_jap": "側面がギザギザしている"
+	},
+	"21": {
+		"name": "Six-sided Die",
+		"name_jap": "サイコロ",
+		"desc": "A normal six-sided die.%rGood for curing indecision.",
+		"desc_jap": "普通の６面サイコロ%rこれで迷うことはない"
+	},
+	"34": {
+		"name": "Bird Feather",
+		"name_jap": "鳥の羽",
+		"desc": "A beautiful osprey feather.",
+		"desc_jap": "大きくて美しい%r猛きん類の羽根"
+	},
+	"35": {
+		"name": "Clean Handkerchief",
+		"name_jap": "清潔なハンカチ",
+		"desc": "A freshly laundered%rhandkerchief.",
+		"desc_jap": "洗いたての綺麗な%r小さめのハンカチ"
+	},
+	"36": {
+		"name": "Bendy Straw",
+		"name_jap": "曲がったストロー",
+		"desc": "A plastic straw bent into%ra silly shape.",
+		"desc_jap": "プラスチックのストロー%r特徴的な形をしている"
+	},
+	"37": {
+		"name": "Eyeglass Lens",
+		"name_jap": "眼鏡のレンズ",
+		"desc": "A lens from a pair of %rsoda-bottle glasses.",
+		"desc_jap": "眼鏡のレンズ部分%rかなり度が強い"
+	},
+	"38": {
+		"name": "Child's Wristband",
+		"name_jap": "子ども用の腕章",
+		"desc": "A fabric wristband from an%ramusement park.",
+		"desc_jap": "テカテカしたビニールの腕章%r安全ピンで止めるタイプ"
+	},
+	"39": {
+		"name": "Damaged Spoon",
+		"name_jap": "変わったスプーン",
+		"desc": "The tip is so chipped it%rlooks more like a spork.",
+		"desc_jap": "スプーンの先が割れていて%rフォークのようにも使える"
+	},
+	"41": {
+		"name": "Worn Postcard",
+		"name_jap": "よれよれのはがき",
+		"desc": "Whatever was written is too%rsmudged to read now.",
+		"desc_jap": "何か書かれていたみたいだけど%rにじんで読めない"
+	},
+	"42": {
+		"name": "Warped Container",
+		"name_jap": "しまらないタッパー",
+		"desc": "A plastic container covered%rwith bite marks.",
+		"desc_jap": "噛みあとが沢山あるタッパー%r綺麗に洗われている"
+	},
+	"45": {
+		"name": "Bottle Cap",
+		"name_jap": "ジュース瓶の王冠",
+		"desc": "A bottle cap with a thin%rpiece of cork inside.",
+		"desc_jap": "見たことがない柄の王冠%r裏に薄いコルクがついている"
+	},
+	"46": {
+		"name": "Gift-wrap Ribbon",
+		"name_jap": "プレゼントリボン",
+		"desc": "A slightly tangled ribbon%ronce used to wrap presents.",
+		"desc_jap": "プレゼント箱に結ばれていた%rちょっとヨレたリボン"
+	},
+	"50": {
+		"name": "Tiny Toothbrush",
+		"name_jap": "小さな歯ブラシ",
+		"desc": "A special toothbrush for cats.%rIt looks like it's been used.",
+		"desc_jap": "ねこ用の小さい歯ブラシ%r意外としっかり使われている"
+	},
+	"51": {
+		"name": "Puzzle Piece",
+		"name_jap": "パズルピース",
+		"desc": "A piece from a jigsaw puzzle.",
+		"desc_jap": "ジグソーパズルのピース"
+	},
+	"54": {
+		"name": "Wilted Plant Bulb",
+		"name_jap": "しなびた球根",
+		"desc": "A shriveled plant bulb with%rtraces of dirt on it.",
+		"desc_jap": "表面に土の残る%rしおしおの球根"
+	},
+	"55": {
+		"name": "Ribbon Hair Band",
+		"name_jap": "リボンのヘアゴム",
+		"desc": "A pretty hair band adorned with%ra pink dotted ribbon.",
+		"desc_jap": "ドット柄のリボンのヘアゴム"
+	},
+	"57": {
+		"name": "Leather Choker",
+		"name_jap": "革のチョーカー",
+		"desc": "A leather choker with a broken locket%rthat won't open.",
+		"desc_jap": "ロケットがついた革製チョーカー%r壊れて開かない"
+	},
+	"58": {
+		"name": "Cotton Scarf",
+		"name_jap": "綿のスカーフ",
+		"desc": "A soft scarf. The back is embroidered%rwith some sort of words.",
+		"desc_jap": "肌触りのいい綿のスカーフ%r裏に文字のような刺繍がある"
+	},
+	"60": {
+		"name": "Stiff Paint",
+		"name_jap": "カチカチの絵の具",
+		"desc": "It's been unused for so long that%r it's dried up and frozen stiff.",
+		"desc_jap": "長い時間しまわれて%rカチカチになってしまった絵の具"
+	},
+	"61": {
+		"name": "Forgotten Key",
+		"name_jap": "忘れられたカギ",
+		"desc": "A small toy key.%rNo one knows where it goes to.",
+		"desc_jap": "オモチャのカギ%rどこのものかわからない"
+	},
+	"63": {
+		"name": "Game Pieces",
+		"name_jap": "ゲームの駒",
+		"desc": "Pieces of various board games.%rSeems rather new and not used much.",
+		"desc_jap": "いろんなボードゲームの駒%rどれもあまり使い込まれていない"
+	},
+	"64": {
+		"name": "Handmade Otedama",
+		"name_jap": "手作りのお手玉",
+		"desc": "A toy made out of pieces of fabric sewn%rtogether.It looks worn-out.",
+		"desc_jap": "端切れで縫われたお手玉%rほつれてクタクタになっている"
+	},
+	"65": {
+		"name": "Old Roll Film",
+		"name_jap": "忘れられたフィルム",
+		"desc": "Seems already worn-out by sunlight...%rthe film might not develop.",
+		"desc_jap": "表面すら日焼けしてしまったフィルム%rおそらく現像はできないだろう"
+	},
+	"66": {
+		"name": "Sea Glass",
+		"name_jap": "角の取れたガラス片",
+		"desc": "Pieces of glass found on beaches.%rThe shapes are uneven but has a nice%rtouch.",
+		"desc_jap": "波打ち際などで見つかるガラス片%r不揃いだけど触り心地は良い"
+	},
+	"22": {
+		"name": "Signed Baseball",
+		"name_jap": "サインボール",
+		"desc": "A baseball with someone's%rautograph.",
+		"desc_jap": "サインらしき文字がある%r野球ボール"
+	},
+	"23": {
+		"name": "Feathered Hat",
+		"name_jap": "羽根付き帽子",
+		"desc": "An attractive hat decorated%rwith feathers.",
+		"desc_jap": "水鳥の羽根があしらわれた%r綺麗な小さめの帽子"
+	},
+	"24": {
+		"name": "Pretty Stones",
+		"name_jap": "綺麗な石",
+		"desc": "Beautiful、 clear stones of%runknown value.",
+		"desc_jap": "濁りのない綺麗な石%r価値は不明"
+	},
+	"25": {
+		"name": "Dog Tag",
+		"name_jap": "銀のタグ",
+		"desc": "A silver tag with writing%rembossed on it.",
+		"desc_jap": "何も書かれていない銀色のタグ"
+	},
+	"26": {
+		"name": "Mysterious Stone",
+		"name_jap": "不思議な形の石",
+		"desc": "A uniquely shaped polished%rstone that radiates power.",
+		"desc_jap": "なんだかとてもパワーを感じる%r特徴的な形の石細工"
+	},
+	"27": {
+		"name": "Gold Coin",
+		"name_jap": "小判",
+		"desc": "A shiny gold coin.",
+		"desc_jap": "キラキラと眩しい小判"
+	},
+	"28": {
+		"name": "Antique Compass",
+		"name_jap": "年代物のコンパス",
+		"desc": "A continually spinning%rcompass.",
+		"desc_jap": "なかなか止まらないコンパス"
+	},
+	"29": {
+		"name": "Hand-drawn Ticket",
+		"name_jap": "手作りの切符",
+		"desc": "A ticket drawn by a child、%rbut too smudged to read.",
+		"desc_jap": "子どもが作ったような切符%rにじんで字が読めない"
+	},
+	"30": {
+		"name": "Fish Jerky",
+		"name_jap": "かつお節",
+		"desc": "Piece of dried fish covered%rin claw marks.",
+		"desc_jap": "爪でとがれたような跡がある%rとてもいい香りがする"
+	},
+	"31": {
+		"name": "Odd Wooden Charm",
+		"name_jap": "不明の通行手形",
+		"desc": "A wood tag used for border%rcrossings in ancient times.",
+		"desc_jap": "綺麗な木目の通行手形%rどこの関所かわからない"
+	},
+	"32": {
+		"name": "Novelty Sunglasses",
+		"name_jap": "大きいサングラス",
+		"desc": "Oversized sunglasses to%ravoid more than UV light.",
+		"desc_jap": "日光以外も遮りたい時の%rおおきなサングラス"
+	},
+	"33": {
+		"name": "Custom Rolling Pin",
+		"name_jap": "専用の伸ばし棒",
+		"desc": "A rolling pin custom made%rto fit cat-sized paws.",
+		"desc_jap": "ねこの手にフィットする%rオーダーメイドの伸ばし棒"
+	},
+	"40": {
+		"name": "Elegant Paint Brush",
+		"name_jap": "上質な筆",
+		"desc": "A new paint brush with a%rfine point.",
+		"desc_jap": "新品の先の尖った筆%r上質な毛でつくられている"
+	},
+	"43": {
+		"name": "Elegant Staff",
+		"name_jap": "変わった杖",
+		"desc": "A staff with a complex%rdesign.",
+		"desc_jap": "変わった形の杖%r持つと不思議な気持ちになる"
+	},
+	"44": {
+		"name": "Coffee Cup",
+		"name_jap": "コーヒーカップ",
+		"desc": "A dainty coffee cup with%rcute designs.",
+		"desc_jap": "小ぶりで綺麗なコーヒーカップ%r口当たりも柔らかい"
+	},
+	"47": {
+		"name": "Lucky Coin",
+		"name_jap": "アンティークコイン",
+		"desc": "An old coin with the same%rpattern on both sides.",
+		"desc_jap": "綺麗な模様が彫り込まれた古いコイン%r裏も表も同じ模様になっている"
+	},
+	"49": {
+		"name": "Thaw-Proof Snowman",
+		"name_jap": "溶けないゆきだるま",
+		"desc": "This melt-resistant snowman is%rforever cold to the touch.",
+		"desc_jap": "さわると冷たいのに%r全く溶ける様子のない雪だるま"
+	},
+	"52": {
+		"name": "Poetry Book",
+		"name_jap": "お気に入りの詩集",
+		"desc": "An anthology of poems filled with%rlovely cat illustrations.",
+		"desc_jap": "書かれている内容はわからないけど%r綺麗なねこの挿絵がある詩集"
+	},
+	"53": {
+		"name": "Silver Pocket Watch",
+		"name_jap": "銀の懐中時計",
+		"desc": "An antique watch that still%rkeeps time when you wind it.",
+		"desc_jap": "鍵巻き式の懐中時計%r年代物だけど正確に時を刻む"
+	},
+	"56": {
+		"name": "Old Map",
+		"name_jap": "古びた地図",
+		"desc": "A faded map printed on a parchment.",
+		"desc_jap": "色あせた羊皮紙の地図"
+	},
+	"59": {
+		"name": "Paper Shuriken",
+		"name_jap": "折り紙の手裏剣",
+		"desc": "A paper shuriken carefully folded%rusing traditional Japanese paper.",
+		"desc_jap": "和紙で丁寧に折られた手裏剣"
+	},
+	"62": {
+		"name": "Small Glass Bottle",
+		"name_jap": "ガラスの小瓶",
+		"desc": "It contains soft、 fine powder.",
+		"desc_jap": "柔らかく細かい粉末が入っている"
+	},
+	"48": {
+		"name": "Soffted Hawk",
+		"name_jap": "黄色いぬいぐるみ",
+		"desc": "--.",
+		"desc_jap": "どこかで見たことがあるような%r黄色い鳥のぬいぐるみ"
+	}
+}
