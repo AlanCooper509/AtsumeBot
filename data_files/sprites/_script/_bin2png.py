@@ -18,7 +18,7 @@ def createPNG(bin_file):
                 if header == binascii.unhexlify("".join(png_header[1:])):
                     data.append(img)
                     img = b""
-                    print("header found!")
+                    # print("header found!")
                 f.seek(-7, 1)
             img = img + b
             b = f.read(1)
@@ -26,8 +26,9 @@ def createPNG(bin_file):
     data = data[1:]
     if not os.path.exists(bin_file.split('.')[0]):
         os.makedirs(bin_file.split('.')[0])
+
     for i, val in enumerate(data):
-        with open(f"{bin_file.split('.')[0]}/{bin_file.split('.')[0]}-{str(i)}.png", "wb") as f:
+        with open(f"{bin_file.split('.')[0]}/{i}.png", "wb") as f:
             f.write(bytes(val))
 
 if __name__ == "__main__":
