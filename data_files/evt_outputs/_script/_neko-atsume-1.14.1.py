@@ -566,13 +566,13 @@ class NekoAtsumeData:
 
             name_jap = read_string(data)
 
-            unk1 = read_short(data)  ##
+            img_goods_id = read_short(data)
 
             shop_desc_jap = read_string(data)
             goodies_desc_jap = read_string(data)
             food = read_char(data)
 
-            unk2 = read_short(data)  ##
+            img_goods_main_id = read_short(data)
 
             # all three tend to be very similar
             unk3 = read_short(data)  ##
@@ -608,9 +608,9 @@ class NekoAtsumeData:
                 'spot': spot,
                 'type': goody_type,
                 'group': group,
+                'img_goods_id': img_goods_id,
+                'img_goods_main_id': img_goods_main_id,
 
-                'unk1': unk1,
-                'unk2': unk2,
                 'unk3': unk3,
                 'unk4': unk4,
                 'unk5': unk5,
