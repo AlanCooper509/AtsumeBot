@@ -3,7 +3,6 @@ const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
 const emotes = require("../helpers/emotes.js");
 const emoteID = require("../helpers/emote2string.js");
-const path = require("path");
 
 module.exports = (message) => {
 	let tokens = message.content.split(' ');
@@ -67,19 +66,19 @@ module.exports = (message) => {
 
 function previewPurchase(message, item, new_balance) {
 	let currencyEmote = item.price_type == 'F' ? emotes.fish : emotes.goldfish;
-	let sizeEmote = item.size == 'S' ? emotes.small : emotes.large;
+	let sizeEmote = item.size == 'S' ? emotes.small : item.size === 'L' ? emotes.large : ":sushi:";
 
 	// create confirmation message
 	const itemEmbed = new Discord.MessageEmbed()
-		.attachFiles([item.img_link, "images/logos/Button_Shop.png"])
-		.setAuthor(`${item.name}`, `attachment://${path.basename(item.img_link)}`)
+		.attachFiles([`images/goodies/${item.image_id}.png`, "images/logos/Button_Shop.png"])
+		.setAuthor(`${item.name}`, `attachment://${item.image_id}.png`)
 		.setDescription(`${item.description} ${sizeEmote}\n\u200B`)
 		.setThumbnail(`attachment://Button_Shop.png`)
 		.addField(`Current Balance`, `${currencyEmote} ${new_balance + item.price_amount}`, true)
 		.addField(`Price`, `${currencyEmote} ${item.price_amount}`, true)
 		.addField(`New Balance`, `${currencyEmote} ${new_balance}`, true)
 		.addField('\u200B', `> Purchase **${item.name}**?`)
-		.setImage(`attachment://${path.basename(item.img_link)}`)
+		.setImage(`attachment://${item.image_id}.png`)
 		.setFooter("React to this message (1 minute)");
 	const filter = (reaction, user) => {
 		return [emoteID(emotes.yes), emoteID(emotes.no)].includes(reaction.emoji.id) && user.id === message.author.id;

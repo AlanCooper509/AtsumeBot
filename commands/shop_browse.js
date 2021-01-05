@@ -10,7 +10,7 @@ module.exports = (message) => {
 
 	// setup queries
 	const shopQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT * FROM GoodiesShop ORDER BY category ASC`;
+		let sql = `SELECT * FROM GoodiesShop ORDER BY order_id ASC`;
 		db.all(sql, [], (err, rows) => {
 			if (err) reject(err);
 			else resolve(rows);
@@ -42,23 +42,24 @@ module.exports = (message) => {
 			// sort items by category (dictionary of lists)
 			itemLists = {};
 			shopRows.forEach(row => {
-				let size = row.size === 'S' ? emotes.small : emotes.large;
+				let category = row.category.toLowerCase();
+				let size = row.size === 'S' ? emotes.small : row.size === 'L' ? emotes.large : ":sushi:";
 				let name = inventory.filter(entry => entry.item_name == row.name).length > 0 ? `~~\`${rightPadding(row.name)}\`~~` : `\`${rightPadding(row.name)}\``;
 				let cost = row.price_type === 'F' ? `\`${leftPadding(row.price_amount)}\` ${emotes.fish}` : `\`${leftPadding(row.price_amount)}\` ${emotes.goldfish}`;
 				let rowEntry = `${size} │ ${name} │ ${cost}`; // to be further formatted after compiling
 
 				// pagination of categories
 				let pageNumber = 1;
-				let entriesPerPage = 15;
-				while( `${row.category} (Page ${pageNumber})` in itemLists && itemLists[`${row.category} (Page ${pageNumber})`].length >= entriesPerPage) {
+				let entriesPerPage = 8;
+				while( `${category} (Page ${pageNumber})` in itemLists && itemLists[`${category} (Page ${pageNumber})`].length >= entriesPerPage) {
 					pageNumber++;
 				};
 
 				// create or add row entry to appropriate category and page
-				if (`${row.category} (Page ${pageNumber})` in itemLists) {
-					itemLists[`${row.category} (Page ${pageNumber})`].push(rowEntry);
+				if (`${category} (Page ${pageNumber})` in itemLists) {
+					itemLists[`${category} (Page ${pageNumber})`].push(rowEntry);
 				} else {
-					itemLists[`${row.category} (Page ${pageNumber})`] = [rowEntry];
+					itemLists[`${category} (Page ${pageNumber})`] = [rowEntry];
 				}
 			});
 
@@ -75,33 +76,75 @@ function sendReplies(message, userRow, itemLists) {
 		.setThumbnail("attachment://Button_shop.png")
 		.setDescription("> Purchase new goodies using:\n> **%shop [goodie-name]**")
 		.addField("Current Balance:", `${userRow.fish_count} ${emotes.fish}`, true)
-		.addField('\u200b', `${userRow.goldfish_count} ${emotes.goldfish}`, true);
+		.addField('\u200b', `${userRow.goldfish_count} ${emotes.goldfish}`, true)
+		.addField('\u200b', "**Select a Category**")
+		.setFooter("React below, hover for description");
 
-	let current_category = "Balls (Page 1)"; // TODO: make food first category after adding the food items in
-	message.channel.send(shopEmbed).then(() => {
-		// display first shop page
-		return message.channel.send(createTable(current_category, itemLists));
-	}).then(tableMessage => {
-		// display emotes to flip shop pages
-		return tableMessage.react(emoteID(emotes.left));
-	}).then((tableMessageReact) => {
-		return tableMessageReact.message.react(emoteID(emotes.right));
-	}).then((tableMessageReact) => {
-		let tableMessage = tableMessageReact.message;
-		// define listener for when original author emotes to flip shop pages
-		const filter = (reaction, user) => {
-			return [emoteID(emotes.left), emoteID(emotes.right)].includes(reaction.emoji.id) && user.id === message.author.id;
+	let emote_categories = [
+		emoteID(emotes.food_other),
+		emoteID(emotes.balls),
+		emoteID(emotes.boxes),
+		emoteID(emotes.beds),
+		emoteID(emotes.furniture),
+		emoteID(emotes.tunnels),
+		emoteID(emotes.toys),
+		emoteID(emotes.heating),
+		emoteID(emotes.bags_hiding),
+		emoteID(emotes.scratching),
+		emoteID(emotes.baskets)
+	];
+	message.channel.send(shopEmbed).then(embed => {
+		// define listener for when original author emotes to select category
+		const embedFilter = (reaction, user) => {
+			return emote_categories.includes(reaction.emoji.id) && user.id === message.author.id;
 		};	
-		const collector = tableMessage.createReactionCollector(filter, { dispose: true, time: 60000 });
-		collector.on("collect", (reaction) => {
-			current_category = updateTable(tableMessage, reaction, current_category, itemLists);
+		const embedCollector = embed.createReactionCollector(embedFilter, { max: 1, time: 60000 });
+		embedCollector.on("collect", (reaction) => {
+			let category = reaction.emoji.name;
+			let current_page = `${category} (Page 1)`;
+			let tableText = createTable(current_page, itemLists);
+			
+			message.channel.send(tableText).then(tableMessage => {
+				// define listener for when original author emotes to turn pages in the selected category
+				if (Object.keys(itemLists).filter(page => page.startsWith(category)).length > 1) {
+					const tableFilter = (reaction, user) => {
+						return [emoteID(emotes.left), emoteID(emotes.right)].includes(reaction.emoji.id) && user.id === message.author.id;
+					}
+					const tableCollector = tableMessage.createReactionCollector(tableFilter, { dispose: true, time: 60000 });
+					tableCollector.on("collect", (reaction) => {
+						current_page = updateTable(tableMessage, reaction, current_page, itemLists);
+					});
+					tableCollector.on("remove", (reaction) => {
+						current_page = updateTable(tableMessage, reaction, current_page, itemLists);
+					});
+					tableCollector.on("end", () => {
+						tableMessage.react('🚫');
+					});
+					return tableMessage;
+				}
+			}).then( tableMessage => {
+				if (Object.keys(itemLists).filter(page => page.startsWith(category)).length > 1) {
+					tableMessage.react(emoteID(emotes.left)).then((tableMessageReact) => {
+						return tableMessageReact.message.react(emoteID(emotes.right));
+					});
+				}
+			});
 		});
-		collector.on("remove", (reaction) => {
-			current_category = updateTable(tableMessage, reaction, current_category, itemLists);
+		embedCollector.on("end", () => {
+			embed.react('🚫');
 		});
-		collector.on("end", () => {
-			tableMessage.react('🚫');
-		});
+		return embed;
+	}).then(embed => {
+		if (emote_categories.length > 0) {
+			let reactPromise = embed.react(emote_categories[0]);
+			for (let i = 1; i < emote_categories.length; i++) {
+				reactPromise = reactPromise.then(react => {
+					if(!embed.reactions.cache.has('🚫')) {
+						return react.message.react(emote_categories[i]);
+					}
+				});
+			}
+		}
 	});
 }
 
@@ -121,9 +164,9 @@ function leftPadding(inputString) {
 	return `${zeros}${inputString}`;
 }
 
-function createTable(current_category, itemLists) {
+function createTable(current_page, itemLists) {
 	let width = 41;
-	let title = `Category: ${current_category}`;
+	let title = `Category: ${current_page}`;
 
 	let spaces = '';
 	for (let i = title.length; i < width; i++) { spaces += ' '; }
@@ -134,7 +177,7 @@ function createTable(current_category, itemLists) {
 	topBorder = `\`${topBorder}\``;
 	
 	let border = "`│`";
-	let rows = `${border}${itemLists[current_category].join(`${border}\n${border}`)}${border}`;
+	let rows = `${border}${itemLists[current_page].join(`${border}\n${border}`)}${border}`;
 	
 	let bottomBorder = '';
 	for (let i = 0; i < width; i++) {bottomBorder += '¯'; }
@@ -143,14 +186,18 @@ function createTable(current_category, itemLists) {
 	return `${header}\n${topBorder}\n${rows}\n${bottomBorder}`;
 }
 
-function updateTable(table, reaction, current_category, itemLists) {
+function updateTable(tableMessage, reaction, current_page, itemLists) {
 	let offset = 0;
 	if (reaction.emoji.name == "left") offset = -1;
 	else if (reaction.emoji.name == "right") offset = 1;
-	else return current_category;
+	else return current_page;
 	let keys = Object.keys(itemLists);
-	let new_category = keys[(keys.indexOf(current_category) + offset + keys.length) % keys.length];
-	let new_table = createTable(new_category, itemLists);
-	table.edit(new_table);
-	return new_category;
+	let category = current_page.split('(')[0];
+	let new_page = keys[(keys.indexOf(current_page) + offset + keys.length) % keys.length];
+	while(!new_page.startsWith(category)) {
+		new_page = keys[(keys.indexOf(new_page) + offset + keys.length) % keys.length];
+	}
+	let new_table = createTable(new_page, itemLists);
+	tableMessage.edit(new_table);
+	return new_page;
 }
