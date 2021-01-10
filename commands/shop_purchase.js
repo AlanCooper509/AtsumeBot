@@ -43,22 +43,19 @@ module.exports = (message) => {
 
 	// execute queries
 	Promise.all([itemExistsQuery, purchasedQuery, balanceQuery]).then( results => {
+		db.close();
 		let item = results[0];
 		let hasPurchased = typeof results[1] != "undefined";
 		let canPurchase = results[2].new_balance >= 0;
 
 		// edge cases
 		if(typeof item == "undefined") {
-			db.close();
 			message.channel.send(`Could not find **${itemInput}** in the shop.`);
-		} else if (hasPurchased) {
-			db.close();
+		} else if (hasPurchased && item.category !== "Food_Other") {
 			message.channel.send(`**${item.name}** has already been purchased.`);
 		} else if (!canPurchase) {
-			db.close();
 			message.channel.send(`You don't have enough ${item.price_type == 'F' ? "fish" : "goldfish"}...`);
 		} else {
-			db.close();
 			previewPurchase(message, item, results[2].new_balance);
 		}
 	});
@@ -112,11 +109,27 @@ function performPurchase(message, item, new_balance) {
 	const addPurchase = new Promise((resolve, reject) => {
 		headers = ["discord_id", "item_name"];
 		values = [`\"d-${message.author.id}\"`, `\"${item.name}\"`];
+		
 		let sql = `INSERT INTO PurchaseLog (${headers.join(', ')}) VALUES (${values.join(', ')})`;
-		db.run(sql, [], err => {
-			if (err) throw(err);
-			else resolve();
-		});
+		console.log(item.name);
+		if(item.name == "Frisky Bitz") {
+			// special case: frisky bitz is quantity 3
+			let next = new Promise((resolve, reject) => { resolve(); });
+			for (let i = 0; i < 3; i++) {
+				next = next.then(() => {
+					db.run(sql, [], err => {
+						if (err) reject(err);
+						else resolve();
+					});
+				});
+			}
+		} else {
+			// normal case: purchase item once
+			db.run(sql, [], err => {
+				if (err) throw(err);
+				else resolve();
+			});
+		}
 	});
 	const updateBalance = new Promise((resolve, reject) => {
 		let sql = `UPDATE PlayerData SET ${item.price_type == 'F' ? "fish_count" : "goldfish_count"} = ${new_balance} WHERE discord_id = \"d-${message.author.id}\"`;

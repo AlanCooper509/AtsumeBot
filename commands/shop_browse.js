@@ -43,8 +43,8 @@ module.exports = (message) => {
 			itemLists = {};
 			shopRows.forEach(row => {
 				let category = row.category.toLowerCase();
-				let size = row.size === 'S' ? emotes.small : row.size === 'L' ? emotes.large : ":sushi:";
-				let name = inventory.filter(entry => entry.item_name == row.name).length > 0 ? `~~\`${rightPadding(row.name)}\`~~` : `\`${rightPadding(row.name)}\``;
+				let size = row.size === 'S' ? emotes.small : row.size === 'L' ? emotes.large : row.food ? emotes[row.name.toLowerCase().split(" ").join("_")] : ":sushi:";
+				let name = inventory.filter(entry => entry.item_name == row.name).length > 0 && category !== "food_other" ? `~~\`${rightPadding(row.name)}\`~~` : `\`${rightPadding(row.name)}\``;
 				let cost = row.price_type === 'F' ? `\`${leftPadding(row.price_amount)}\` ${emotes.fish}` : `\`${leftPadding(row.price_amount)}\` ${emotes.goldfish}`;
 				let rowEntry = `${size} │ ${name} │ ${cost}`; // to be further formatted after compiling
 
