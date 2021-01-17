@@ -3,6 +3,9 @@ const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
 const emotes = require("../helpers/emotes.js");
 const emoteID = require("../helpers/emote2string.js");
+const rightPadding = require("../helpers/rightPadding.js");
+const createTable = require("../helpers/table_create.js");
+const updateTable = require("../helpers/table_update.js");
 
 module.exports = (message) => {
 	// open db
@@ -49,8 +52,8 @@ module.exports = (message) => {
 				let rowEntry = `${size} │ ${name} │ ${cost}`; // to be further formatted after compiling
 
 				// pagination of categories
+				const entriesPerPage = 8;
 				let pageNumber = 1;
-				let entriesPerPage = 8;
 				while( `${category} (Page ${pageNumber})` in itemLists && itemLists[`${category} (Page ${pageNumber})`].length >= entriesPerPage) {
 					pageNumber++;
 				};
@@ -148,56 +151,10 @@ function sendReplies(message, userRow, itemLists) {
 	});
 }
 
-function rightPadding(inputString) {
-	// Goal: right padding with spaces to match item name widths
-	let maxLength = 22; // "Grass Cushion (Purple)" from analyzing the GoodiesShop table in memory.db
-	let spaces = '';
-	for (let i = inputString.length; i < maxLength; i++) { spaces += ' '; }
-	return `${inputString}${spaces}`;
-}
-
 function leftPadding(inputString) {
 	// Goal: left padding with spaces to match price_amount widths
 	let maxLength = 4; // Antique Chair (1500 fish)
 	let zeros = '';
 	for (let i = inputString.toString().length; i < maxLength; i++) { zeros += '0'; }
 	return `${zeros}${inputString}`;
-}
-
-function createTable(current_page, itemLists) {
-	let width = 41;
-	let title = `Category: ${current_page}`;
-
-	let spaces = '';
-	for (let i = title.length; i < width; i++) { spaces += ' '; }
-	let header = `\`${title}${spaces}\``
-
-	let topBorder = '';
-	for (let i = 0; i < width; i++) {topBorder += '_'; }
-	topBorder = `\`${topBorder}\``;
-	
-	let border = "`│`";
-	let rows = `${border}${itemLists[current_page].join(`${border}\n${border}`)}${border}`;
-	
-	let bottomBorder = '';
-	for (let i = 0; i < width; i++) {bottomBorder += '¯'; }
-	bottomBorder = `\`${bottomBorder}\``;
-
-	return `${header}\n${topBorder}\n${rows}\n${bottomBorder}`;
-}
-
-function updateTable(tableMessage, reaction, current_page, itemLists) {
-	let offset = 0;
-	if (reaction.emoji.name == "left") offset = -1;
-	else if (reaction.emoji.name == "right") offset = 1;
-	else return current_page;
-	let keys = Object.keys(itemLists);
-	let category = current_page.split('(')[0];
-	let new_page = keys[(keys.indexOf(current_page) + offset + keys.length) % keys.length];
-	while(!new_page.startsWith(category)) {
-		new_page = keys[(keys.indexOf(new_page) + offset + keys.length) % keys.length];
-	}
-	let new_table = createTable(new_page, itemLists);
-	tableMessage.edit(new_table);
-	return new_page;
 }
