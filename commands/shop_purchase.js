@@ -111,7 +111,6 @@ function performPurchase(message, item, new_balance) {
 		values = [`\"d-${message.author.id}\"`, `\"${item.name}\"`];
 		
 		let sql = `INSERT INTO PurchaseLog (${headers.join(', ')}) VALUES (${values.join(', ')})`;
-		console.log(item.name);
 		if(item.name == "Frisky Bitz") {
 			// special case: frisky bitz is quantity 3
 			let next = new Promise((resolve, reject) => { resolve(); });

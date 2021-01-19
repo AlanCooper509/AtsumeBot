@@ -87,7 +87,7 @@ function previewPlacement(message, food, count, isThrifty) {
 			let emoji = collected.first().emoji.name;
 			
 			let removeFromYard = new Promise((resolve, reject) => {
-				let sql = `DELETE FROM YardData WHERE item_type == \"Food_Other\" AND${emoji === '🏠' ? " NOT " : ' '}outside`;
+				let sql = `DELETE FROM YardData WHERE id = (SELECT id FROM YardData WHERE item_type == \"Food_Other\" AND${emoji === '🏠' ? " NOT " : ' '}outside ORDER BY timestamp LIMIT 1)`;
 				db.run(sql, [], err => {
 					if (err) reject(err);
 					else resolve(emoji);
