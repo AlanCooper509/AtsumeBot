@@ -43,16 +43,16 @@ module.exports = (message) => {
 
 	// execute queries
 	Promise.all([itemExistsQuery, purchasedQuery, balanceQuery]).then( results => {
-		db.close();
 		let item = results[0];
 		let hasPurchased = typeof results[1] != "undefined";
 		let canPurchase = results[2].new_balance >= 0;
+		db.close();
 
 		// edge cases
 		if(typeof item == "undefined") {
 			message.channel.send(`Could not find **${itemInput}** in the shop.`);
 		} else if (hasPurchased && item.category !== "Food_Other") {
-			message.channel.send(`**${item.name}** has already been purchased.`);
+			message.channel.send(`You have already purchased **${item.name}**.`);
 		} else if (!canPurchase) {
 			message.channel.send(`You don't have enough ${item.price_type == 'F' ? "fish" : "goldfish"}...`);
 		} else {

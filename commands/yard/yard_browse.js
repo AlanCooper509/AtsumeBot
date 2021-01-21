@@ -25,20 +25,31 @@ module.exports = (message) => {
 			else resolve(rows);
 		});
 	});
-	let foodQuery = new Promise(food_status.yardStatus);
+	const yardSizeQuery = new Promise((resolve, reject) => {
+		let sql = `SELECT COUNT() AS count FROM PurchaseLog WHERE discord_id = \"d-${message.author.id}\" AND item_name == \"Yard Expansion\" GROUP BY item_name`;
+		db.get(sql, [], (err, row) => {
+			if (err) reject(err);
+			else resolve(row);
+		});
+	});
+	const foodQuery = new Promise(food_status.yardStatus);
 
-	Promise.all([userQuery, yardQuery, foodQuery]).then(outputs => {
+	Promise.all([userQuery, yardQuery, foodQuery, yardSizeQuery]).then(outputs => {
 		let userStats = outputs[0];
 		let serverStats = outputs[1];
 		let yardFoods = outputs[2];
+		let expansions = outputs[3];
+		db.close();
 
 		// user information
 		let userOutdoorsItemRows = [];
 		let userIndoorsItemRows = [];
+		let slotsFilled = 0;
 		userStats.forEach(goodie => {
 			let row = `${goodie.size == 'L' ? emotes.large : emotes.small} ${goodie.name}`;
 			if (goodie.outside) userOutdoorsItemRows.push(row);
 			else userIndoorsItemRows.push(row);
+			slotsFilled += goodie.size == 'L' ? 2 : goodie.size == 'S' ? 1 : 0;
 		});
 		let userOutdoorsItems = userOutdoorsItemRows.join('\n') + '\u200b';
 		let userIndoorsItems = userIndoorsItemRows.join('\n') + '\u200b';
@@ -58,13 +69,13 @@ module.exports = (message) => {
 			.attachFiles(["images/logos/Button_Yard.png", "images/logos/atsume.jpg"])
 			.setAuthor(`${message.guild.name}'s Yard`, "attachment://atsume.jpg")
 			.setThumbnail("attachment://Button_Yard.png")
-			.setDescription("> Place or Put Away goodies using:\n> **%yard [goodie-name]**\n> \n> See yard activity using:\n> **%cats**")
-			.addField("\u200b", `__**${message.member.displayName}**'s Goodies__ **(${userStats.length})**`)
+			.setDescription("> Place or Put Away goodies using:\n> **%yard [goodie-name]**\n> \n> See Yard Activity using:\n> **%cats**")
+			.addField("\u200b", `__**${message.member.displayName}**'s Goodies__ **(${slotsFilled}/${expansions.count + 1} Slots Filled)**`)
 			.addField("Outdoors :camping:", userOutdoorsItems, true)
 			.addField("Indoors :house:", userIndoorsItems, true)
-			.addField("\u200b", `__**${message.guild.name}**'s Goodies__ **(${outsideCount + insideCount})**`)
-			.addField("Outdoors :camping:", `**${outsideCount}** Goodies Placed`, true)
-			.addField("Indoors :house:", `**${insideCount}** Goodies Placed`, true)
+			.addField("\u200b", `__**${message.guild.name}**'s Goodies__ **(${outsideCount + insideCount} Goodies Placed)**`)
+			.addField("Outdoors :camping:", `**${outsideCount}** ${outsideCount > 1 ? "Goodies" : "Goodie"} Placed`, true)
+			.addField("Indoors :house:", `**${insideCount}** ${insideCount > 1 ? "Goodies" : "Goodie"} Placed`, true)
 			.addField("\u200b", "Currently, the following foods are placed in the yard:");
 		food_status.addFields(yardEmbed, yardFoods);
 		message.channel.send(yardEmbed);

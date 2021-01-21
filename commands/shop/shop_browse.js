@@ -36,10 +36,10 @@ module.exports = (message) => {
 
 	// execute queries
 	Promise.all([shopQuery, userQuery, soldQuery]).then( results => {
-		db.close();
 		let shopRows = results[0];
 		let userRow = results[1];
 		let inventory = results[2];
+		db.close();
 
 		if (shopRows.length > 0) {
 			// sort items by category (dictionary of lists)

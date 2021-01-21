@@ -49,12 +49,13 @@ module.exports = (message) => {
 			let item = results[0];
 			let purchases = results[1];
 			let yardData = results[2];
+			db.close();
 
 			// edge cases
 			if (typeof item == "undefined") {
 				message.channel.send(`Could not find a goodie called **${itemInput}**.`);
 			} else if (purchases.length == 0) {
-				message.channel.send(`You don't own that goodie... You may purchase it using:\n> \`%shop ${item.name}\``);
+				message.reply(`you don't own that goodie. You may purchase it using:\n> \`%shop ${item.name}\``);
 			} else {
 				sendEmbed(message, item, purchases, yardData);
 			}
@@ -80,8 +81,9 @@ function sendEmbed(message, item, purchases, yard) {
 		itemEmbed.setFooter("Place food in the yard using: %food [food-name]");
 	} else if (item.category == "Food_Other") {
 		if(item.name == "Yard Expansion") {
-			let outside = Math.floor(purchases.length, 2) + 1;
-			let inside = Math.floor(purchases.length, 2);
+			let outside = Math.floor(purchases.length / 2) + 1;
+			let inside = Math.floor(purchases.length / 2) + purchases.length % 2;
+
 			itemEmbed.addField("Outdoors :camping:", `${outside} ${outside > 1 ? "Slots" : "Slot"}`, true);
 			itemEmbed.addField("Indoors :house:", `${inside} ${inside > 1 ? "Slots" : "Slot"}`, true);
 		} else {

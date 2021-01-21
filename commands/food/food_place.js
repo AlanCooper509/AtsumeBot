@@ -34,21 +34,21 @@ module.exports = (message) => {
 			db.get(sql, [], (err, row) => {
 				if (err) reject(err);
 				else resolve(row);
-			})
+			});
 		});
 
 		// execute queries
 		Promise.all([foodExistsQuery, inventoryQuery]).then( results => {
-			db.close();
 			let food = results[0];
 			let count_obj = results[1];
+			db.close();
 
 			if (typeof food == "undefined") {
 				message.channel.send(`Could not find **${foodInput}** as a food item.`);
 			} else if (!food.food) {
 				message.channel.send(`**${food.name}** is not a food item!`);
 			} else if (typeof count_obj == "undefined") {
-				message.channel.send(`You don't have any **${food.name}**.`);
+				message.reply(`you don't have any **${food.name}** left. You may purchase more using:\n> \`%shop ${food.name}\``);
 			} else {
 				previewPlacement(message, food, count_obj.count, isThrifty = false);
 			}

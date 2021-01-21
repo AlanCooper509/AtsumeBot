@@ -26,6 +26,7 @@ module.exports = (message) => {
 	Promise.all([inventoryQuery, yardQuery]).then(outputs => {
 		let itemRows = outputs[0];
 		let yardFoods = outputs[1];
+		db.close();
 		
 		let foodEntries = `${emotes["thrifty_bitz"]} Thrifty Bitz (Unlimited)\n`;
 		itemRows.forEach(row => {
@@ -36,7 +37,7 @@ module.exports = (message) => {
 			.attachFiles(["images/logos/Button_Goodies.png", "images/logos/atsume.jpg"])
 			.setAuthor(`${message.member.displayName}'s Food Inventory`, "attachment://atsume.jpg")
 			.setThumbnail("attachment://Button_Goodies.png")
-			.setDescription("> Place food in the yard using:\n> **%food [food-name]**")
+			.setDescription("> Place food in the yard using one of:\n> **%food [food-name]**\n> **%yard [food-name]**")
 			.addField('\u200b', `**__${message.member.displayName}'s Inventory__**\n${foodEntries}`)
 			.addField("\u200b", "Currently, the following foods are placed in the yard:");
 

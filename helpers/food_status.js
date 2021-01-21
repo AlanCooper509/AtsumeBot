@@ -29,8 +29,8 @@ let addFields = function(embed, foods) {
 		if (food.outside) placed_outdoors = true;
 		else placed_indoors = true;
 		let location = food.outside ? "Outdoors 🏕️" : "Indoors 🏠";
-		let timer = food.time_left > 0 ? new Date(food.time_left * 1000).toISOString().substr(11, 8): "No time";
-		embed.addField(location, `${emotes[food.item_name.toLowerCase().split(' ').join('_')]} ${food.item_name}\n${timer} remaining`, true);
+		let timer = food.time_left > 0 ? new Date(food.time_left * 1000).toISOString().substr(11, 8): "No Time";
+		embed.addField(location, `${emotes[food.item_name.toLowerCase().split(' ').join('_')]} ${food.item_name}\n**${timer}** remaining`, true);
 	});
 	
 	// edge case: first time placing food outdoors
