@@ -1,11 +1,11 @@
 // import modules
 const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
-const emotes = require("../helpers/emotes.js");
-const emoteID = require("../helpers/emote2string.js");
-const rightPadding = require("../helpers/rightPadding.js");
-const createTable = require("../helpers/table_create.js");
-const updateTable = require("../helpers/table_update.js");
+const emotes = require("../../helpers/emotes.js");
+const emoteID = require("../../helpers/emote2string.js");
+const rightPadding = require("../../helpers/rightPadding.js");
+const createTable = require("../../helpers/table_create.js");
+const updateTable = require("../../helpers/table_update.js");
 
 module.exports = (message) => {
 	// open db
@@ -27,7 +27,7 @@ module.exports = (message) => {
 
 	const goodiesEmbed = new Discord.MessageEmbed()
 		.attachFiles(["images/logos/Button_Goodies.png", "images/logos/atsume.jpg"])
-		.setAuthor("Goodie Inventory", "attachment://atsume.jpg")
+		.setAuthor(`${message.member.displayName}'s Goodie Inventory`, "attachment://atsume.jpg")
 		.setThumbnail("attachment://Button_Goodies.png")
 		.setDescription("> See info about a goodie using:\n> **%goodies [goodie-name]**\n> \n> Place or Put Away goodies using:\n> **%yard [goodie-name]**");
 	message.channel.send(goodiesEmbed).then(() => {
@@ -41,7 +41,7 @@ module.exports = (message) => {
 			let rowEntry = `${size} │ ${name} │ ${yard}`; // to be further formatted after compiling
 
 			// pagination of categories
-			const entriesPerPage = 5;
+			const entriesPerPage = 8;
 			let pageNumber = 1;
 			while( `Inventory (Page ${pageNumber})` in pages && pages[`Inventory (Page ${pageNumber})`].length >= entriesPerPage) {
 				pageNumber++;

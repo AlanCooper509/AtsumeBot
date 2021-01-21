@@ -1,7 +1,8 @@
 // import modules
-const shop = require("../commands/shop.js");
-const food = require("../commands/food.js");
-const goodies = require("../commands/goodies.js");
+const shop = require("../commands/shop/shop.js");
+const food = require("../commands/food/food.js");
+const goodies = require("../commands/goodies/goodies.js");
+const yard = require("../commands/yard/yard.js");
 const sqlite3 = require("sqlite3").verbose();
 
 // define listener(s)
@@ -50,6 +51,9 @@ module.exports = (client, message) => {
 		}
 		else if (message.content.match(/^%(g|goodies)/i)) {
 			goodies(message);
+		}
+		else if (message.content.match(/^%(y|yard)/i)) {
+			yard(message);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 // import modules
 const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
-const emotes = require("../helpers/emotes.js");
-const emoteID = require("../helpers/emote2string.js");
-const rightPadding = require("../helpers/rightPadding.js");
-const createTable = require("../helpers/table_create.js");
-const updateTable = require("../helpers/table_update.js");
+const emotes = require("../../helpers/emotes.js");
+const emoteID = require("../../helpers/emote2string.js");
+const rightPadding = require("../../helpers/rightPadding.js");
+const createTable = require("../../helpers/table_create.js");
+const updateTable = require("../../helpers/table_update.js");
 
 module.exports = (message) => {
 	// open db
@@ -77,7 +77,7 @@ function sendReplies(message, userRow, itemLists) {
 		.attachFiles(["images/logos/Button_shop.png", "images/logos/atsume.jpg"])
 		.setAuthor("Goodies Shop", "attachment://atsume.jpg")
 		.setThumbnail("attachment://Button_shop.png")
-		.setDescription("> Purchase new goodies using:\n> **%shop [goodie-name]**")
+		.setDescription("> Purchase new goodies using:\n> **%shop [goodie-name]**\n\u200b")
 		.addField("Current Balance:", `${userRow.fish_count} ${emotes.fish}`, true)
 		.addField('\u200b', `${userRow.goldfish_count} ${emotes.goldfish}`, true)
 		.addField('\u200b', "**Select a Category**")

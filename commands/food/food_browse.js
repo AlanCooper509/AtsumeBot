@@ -1,8 +1,8 @@
 // import modules
 const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
-const emotes = require("../helpers/emotes.js");
-const status = require("../helpers/food_status.js");
+const emotes = require("../../helpers/emotes.js");
+const status = require("../../helpers/food_status.js");
 
 // define bot command
 module.exports = (message) => {
@@ -24,8 +24,8 @@ module.exports = (message) => {
 	let yardQuery = new Promise(status.yardStatus);
 	
 	Promise.all([inventoryQuery, yardQuery]).then(outputs => {
-		itemRows = outputs[0];
-		yardFoods = outputs[1];
+		let itemRows = outputs[0];
+		let yardFoods = outputs[1];
 		
 		let foodEntries = `${emotes["thrifty_bitz"]} Thrifty Bitz (Unlimited)\n`;
 		itemRows.forEach(row => {
@@ -34,10 +34,10 @@ module.exports = (message) => {
 		
 		const foodEmbed = new Discord.MessageEmbed()
 			.attachFiles(["images/logos/Button_Goodies.png", "images/logos/atsume.jpg"])
-			.setAuthor("Food Inventory", "attachment://atsume.jpg")
+			.setAuthor(`${message.member.displayName}'s Food Inventory`, "attachment://atsume.jpg")
 			.setThumbnail("attachment://Button_Goodies.png")
 			.setDescription("> Place food in the yard using:\n> **%food [food-name]**")
-			.addField('\u200b', `**Inventory**\n${foodEntries}`)
+			.addField('\u200b', `**__${message.member.displayName}'s Inventory__**\n${foodEntries}`)
 			.addField("\u200b", "Currently, the following foods are placed in the yard:");
 
 		status.addFields(foodEmbed, yardFoods);

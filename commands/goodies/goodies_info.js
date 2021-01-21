@@ -1,7 +1,7 @@
 // import modules
 const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
-const emotes = require("../helpers/emotes.js");
+const emotes = require("../../helpers/emotes.js");
 
 module.exports = (message) => {
 	let tokens = message.content.split(' ');
@@ -77,6 +77,7 @@ function sendEmbed(message, item, purchases, yard) {
 	if (item.food) {
 		let length = item.name == "Thrifty Bitz" ? "Unlimited" : purchases.length;
 		itemEmbed.addField(`Currently Owned`, length, true);
+		itemEmbed.setFooter("Place food in the yard using: %food [food-name]");
 	} else if (item.category == "Food_Other") {
 		if(item.name == "Yard Expansion") {
 			let outside = Math.floor(purchases.length, 2) + 1;
@@ -91,6 +92,7 @@ function sendEmbed(message, item, purchases, yard) {
 		let location = typeof yard == "undefined" ? "Inventory :briefcase:" : yard.outside ? "Outdoors :camping:" : "Indoors :house:";
 		itemEmbed.addField("Where", location, true);
 		itemEmbed.addField("Purchased On", `${datetime.toLocaleDateString()} at ${datetime.toLocaleTimeString()}`, true);
+		itemEmbed.setFooter("Place or Put Away goodies using: %yard [goodie-name]");
 	}
 	message.channel.send(itemEmbed)
 }

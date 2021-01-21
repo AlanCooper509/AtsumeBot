@@ -1,8 +1,8 @@
 // import modules
 const Discord = require("discord.js");
 const sqlite3 = require("sqlite3").verbose();
-const emotes = require("../helpers/emotes.js");
-const emoteID = require("../helpers/emote2string.js");
+const emotes = require("../../helpers/emotes.js");
+const emoteID = require("../../helpers/emote2string.js");
 
 module.exports = (message) => {
 	let tokens = message.content.split(' ');
