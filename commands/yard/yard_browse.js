@@ -11,7 +11,7 @@ module.exports = (message) => {
 
 	let userQuery = new Promise((resolve, reject) => {
 		// get data on user's items placed
-		let sql = `SELECT name, size, outside FROM YardData INNER JOIN GoodiesShop ON item_name == name WHERE item_type != \"Food_Other\" AND discord_id = \"d-${message.author.id}\"`
+		let sql = `SELECT name, size, outside FROM YardData INNER JOIN GoodiesData ON item_name == name WHERE item_type != \"Food_Other\" AND discord_id = \"d-${message.author.id}\"`
 		db.all(sql, [], (err, rows) => {
 			if (err) reject(err);
 			else resolve(rows);

@@ -13,7 +13,7 @@ module.exports = (message) => {
 
 	// setup queries
 	const shopQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT * FROM GoodiesShop ORDER BY order_id ASC`;
+		let sql = `SELECT * FROM GoodiesData ORDER BY order_id ASC`;
 		db.all(sql, [], (err, rows) => {
 			if (err) reject(err);
 			else resolve(rows);

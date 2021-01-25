@@ -3,6 +3,7 @@ const shop = require("../commands/shop/shop.js");
 const food = require("../commands/food/food.js");
 const goodies = require("../commands/goodies/goodies.js");
 const yard = require("../commands/yard/yard.js");
+const cats = require("../commands/cats/cats.js");
 const sqlite3 = require("sqlite3").verbose();
 
 // define listener(s)
@@ -54,6 +55,9 @@ module.exports = (client, message) => {
 		}
 		else if (message.content.match(/^%(y|yard)/i)) {
 			yard(message);
+		}
+		else if (message.content.match(/^%(c|cats)/i)) {
+			cats(message);
 		}
 	}
 }

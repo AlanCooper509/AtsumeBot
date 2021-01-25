@@ -4,13 +4,13 @@ const emotes = require("../helpers/emotes.js");
 let yardStatus = function(resolve, reject) {
 	let db = new sqlite3.Database("memory.s3db");
 
-	// 28,800 seconds (8 hours) for Frisky Bitz (not found in GoodiesShop)
+	// 28,800 seconds (8 hours) for Frisky Bitz (not found in GoodiesData)
 	let sql = `SELECT item_name, outside,
 	CASE WHEN time_limit IS NULL
 		THEN 28800 - (strftime('%s', 'now') - strftime('%s', timestamp))
 		ELSE time_limit - (strftime('%s', 'now') - strftime('%s', timestamp))
 	END AS time_left
-	FROM YardData AS x LEFT JOIN GoodiesShop AS y ON x.item_name == y.name
+	FROM YardData AS x LEFT JOIN GoodiesData AS y ON x.item_name == y.name
 	WHERE item_type == "Food_Other"
 	ORDER BY outside DESC`;
 

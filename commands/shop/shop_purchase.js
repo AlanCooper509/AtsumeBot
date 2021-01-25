@@ -14,7 +14,7 @@ module.exports = (message) => {
 
 	// setup queries
 	const itemExistsQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT * FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
+		let sql = `SELECT * FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
 		db.get(sql, [], (err, row) => {
 			if (err) reject(err);
 			else resolve(row);
@@ -28,11 +28,11 @@ module.exports = (message) => {
 		});
 	});
 	const balanceQuery = new Promise((resolve, reject) => {
-		let sql = `SELECT CASE WHEN (SELECT price_type FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") == 'F' ` +
-			`THEN fish_count - (SELECT price_amount FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") ` +
-			`ELSE goldfish_count - (SELECT price_amount FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") ` +
+		let sql = `SELECT CASE WHEN (SELECT price_type FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") == 'F' ` +
+			`THEN fish_count - (SELECT price_amount FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") ` +
+			`ELSE goldfish_count - (SELECT price_amount FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") ` +
 			`END new_balance, ` +
-			`CASE WHEN (SELECT price_type FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") == 'F' THEN 'F' ELSE 'G' ` +
+			`CASE WHEN (SELECT price_type FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\") == 'F' THEN 'F' ELSE 'G' ` +
 			`END currency ` + 
 			`FROM PlayerData WHERE discord_id = \"d-${message.author.id}\"`
 		db.get(sql, [], (err, row) => {
@@ -52,9 +52,9 @@ module.exports = (message) => {
 		if(typeof item == "undefined") {
 			message.channel.send(`Could not find **${itemInput}** in the shop.`);
 		} else if (hasPurchased && item.category !== "Food_Other") {
-			message.channel.send(`You have already purchased **${item.name}**.`);
+			message.reply(`you have already purchased **${item.name}**.`);
 		} else if (!canPurchase) {
-			message.channel.send(`You don't have enough ${item.price_type == 'F' ? "fish" : "goldfish"}...`);
+			message.reply(`you don't have enough ${item.price_type == 'F' ? "fish" : "goldfish"}...`);
 		} else {
 			previewPurchase(message, item, results[2].new_balance);
 		}

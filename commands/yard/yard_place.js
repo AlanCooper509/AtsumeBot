@@ -13,7 +13,7 @@ module.exports = (message) => {
 	let itemInput = tokens.join(' ').replace(/['"]/g, ''); // no SQL injection today!
 
 	if (itemInput.toLowerCase() === "thrifty bitz") {
-		// special case: infinite amount of basic food (not found in GoodiesShop table)
+		// special case: infinite amount of basic food (not found in GoodiesData table)
 		food_place(message);
 	} else {
 		// normal case: check if placing food (redirect) or other (continue on) goodie item
@@ -21,7 +21,7 @@ module.exports = (message) => {
 
 		// setup queries
 		const itemExistsQuery = new Promise((resolve, reject) => {
-			let sql = `SELECT * FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
+			let sql = `SELECT * FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
 			db.get(sql, [], (err, row) => {
 				if (err) reject(err);
 				else resolve(row);
@@ -45,7 +45,7 @@ module.exports = (message) => {
 					});
 				});
 				const itemsPlacedQuery = new Promise((resolve, reject) => {
-					let sql = `SELECT x.*, y.size FROM YardData AS x INNER JOIN GoodiesShop AS y ON x.item_name == y.name
+					let sql = `SELECT x.*, y.size FROM YardData AS x INNER JOIN GoodiesData AS y ON x.item_name == y.name
 						WHERE x.discord_id = \"d-${message.author.id}\" AND x.item_type != \"Food_Other\"`;
 					db.all(sql, [], (err, rows) => {
 						if (err) reject(err);
@@ -129,7 +129,7 @@ function selectLocation(message, storeItem, yardItem, outside, inside) {
 			.attachFiles([`images/goodies/${storeItem.image_id}.png`, "images/logos/Button_Yard.png"])
 			.setAuthor(`Move ${storeItem.name}?`, `attachment://${storeItem.image_id}.png`)
 			.setThumbnail(`attachment://Button_Yard.png`)
-			.setDescription(`${storeItem.description} ${sizeEmote}`)
+			.setDescription(`${storeItem.bag_description} ${sizeEmote}`)
 			.addField(outside.name, `**(${outside.slots_filled}/${outside.slots})** slots filled`, true)
 			.addField(inside.name, `**(${inside.slots_filled}/${inside.slots})** slots filled`, true)
 			.addField("Current Location",  `${yardItem[0].outside == 1 ? outside.name : inside.name}`)
@@ -167,7 +167,7 @@ function selectLocation(message, storeItem, yardItem, outside, inside) {
 			.attachFiles([`images/goodies/${storeItem.image_id}.png`, "images/logos/Button_Yard.png"])
 			.setAuthor(`Move ${storeItem.name}?`, `attachment://${storeItem.image_id}.png`)
 			.setThumbnail(`attachment://Button_Yard.png`)
-			.setDescription(`${storeItem.description} ${sizeEmote}`)
+			.setDescription(`${storeItem.bag_description} ${sizeEmote}`)
 			.addField("Outdoors :camping:", `**(${outside.slots_filled}/${outside.slots})** goodies placed`, true)
 			.addField("Indoors :house:", `**(${inside.slots_filled}/${inside.slots})** goodies placed`, true)
 			.addField("Current Location",  "Inventory :briefcase:")

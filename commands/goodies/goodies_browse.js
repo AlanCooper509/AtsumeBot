@@ -14,7 +14,7 @@ module.exports = (message) => {
 	let inventoryQuery = new Promise((resolve, reject) => {
 		// get non-food items
 		let sql = `SELECT x.item_name, x.size, x.order_id, y.outside FROM (SELECT item_name, size, order_id FROM PurchaseLog
-			INNER JOIN GoodiesShop ON item_name == name
+			INNER JOIN GoodiesData ON item_name == name
 			WHERE category != "Food_Other" AND discord_id = \"d-${message.author.id}\") AS x
 			LEFT JOIN YardData AS Y ON x.item_name == y.item_name
 			ORDER BY order_id`;

@@ -11,7 +11,7 @@ module.exports = (message) => {
 	let foodInput = tokens.join(' ').replace(/['"]/g, ''); // no SQL injection today!
 
 	if (foodInput.toLowerCase() === "thrifty bitz") {
-		// special case: infinite amount of basic food (not found in GoodiesShop table)
+		// special case: infinite amount of basic food (not found in GoodiesData table)
 		let food = {name: "Thrifty Bitz", image_id: 143, time_limit: 28800}
 		previewPlacement(message, food, 0, isThrifty = true);
 	} else {
@@ -20,7 +20,7 @@ module.exports = (message) => {
 
 		// setup queries
 		const foodExistsQuery = new Promise((resolve, reject) => {
-			let sql = `SELECT * FROM GoodiesShop WHERE LOWER(name) == \"${foodInput.toLowerCase()}\"`;
+			let sql = `SELECT * FROM GoodiesData WHERE LOWER(name) == \"${foodInput.toLowerCase()}\"`;
 			db.get(sql, [], (err, row) => {
 				if (err) reject(err);
 				else resolve(row);
@@ -28,7 +28,7 @@ module.exports = (message) => {
 		});
 		const inventoryQuery = new Promise((resolve, reject) => {
 			let sql = `SELECT COUNT() AS count FROM PurchaseLog
-				INNER JOIN GoodiesShop ON item_name == name
+				INNER JOIN GoodiesData ON item_name == name
 				WHERE LOWER(item_name) == \"${foodInput.toLowerCase()}\" AND discord_id = \"d-${message.author.id}\"
 				GROUP BY item_name`;
 			db.get(sql, [], (err, row) => {

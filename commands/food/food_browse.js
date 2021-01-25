@@ -12,7 +12,7 @@ module.exports = (message) => {
 	let inventoryQuery = new Promise((resolve, reject) => {
 		// get count of food items
 		let sql = `SELECT item_name, COUNT() AS count FROM PurchaseLog
-			INNER JOIN GoodiesShop ON item_name == name
+			INNER JOIN GoodiesData ON item_name == name
 			WHERE food == true AND discord_id = \"d-${message.author.id}\"
 			GROUP BY item_name`;
 		db.all(sql, [], (err, rows) => {

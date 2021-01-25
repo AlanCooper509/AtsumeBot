@@ -24,7 +24,7 @@ module.exports = (message) => {
 		
 		// valid/owned queries
 		let validQuery = new Promise((resolve, reject) => {
-			let sql = `SELECT * FROM GoodiesShop WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
+			let sql = `SELECT * FROM GoodiesData WHERE LOWER(name) == \"${itemInput.toLowerCase()}\"`;
 			db.get(sql, [], (err, row) => {
 				if (err) reject(err);
 				else resolve(row);
@@ -70,7 +70,7 @@ function sendEmbed(message, item, purchases, yard) {
 	const itemEmbed = new Discord.MessageEmbed()
 		.attachFiles([`images/goodies/${item.image_id}.png`, "images/logos/Button_Goodies.png"])
 		.setAuthor(`${message.member.displayName}'s ${item.name}`, `attachment://${item.image_id}.png`)
-		.setDescription(`${item.description} ${itemEmote}\n\u200B`)
+		.setDescription(`${item.bag_description} ${itemEmote}\n\u200B`)
 		.addField("Category", `${item.category} ${emotes[item.category.toLowerCase()]}`, true)
 		.setThumbnail(`attachment://Button_Goodies.png`)
 		.setImage(`attachment://${item.image_id}.png`);
