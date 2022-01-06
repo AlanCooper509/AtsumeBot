@@ -1,4 +1,5 @@
 // import modules
+const info = require("./cats_info.js");
 
 // define bot command
 module.exports = (message) => {
@@ -12,6 +13,6 @@ module.exports = (message) => {
 	}
 	// input case: user is attempting to check information on a specific cat
 	else if (message.content.match(/^%(c|cats) [a-zA-Z0-9]/i)) {
-
+		info(message);
 	}
 }
